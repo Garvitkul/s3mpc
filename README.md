@@ -20,20 +20,28 @@ A powerful command-line tool for managing incomplete S3 multipart uploads across
 
 ```bash
 # Clone the repository
-git clone https://github.com/s3mpc/s3mpc.git
+git clone https://github.com/Garvitkul/s3mpc.git
 cd s3mpc
 
 # Build the binary
 make build
 
-# Or use the build script
-./build.sh
+# Install to PATH
+make install
 ```
 
-### Using Go Install
+### Using Go Install (Recommended)
 
 ```bash
-go install github.com/s3mpc/s3mpc/cmd/s3mpc@latest
+# Install latest version
+go install github.com/Garvitkul/s3mpc@latest
+
+# Verify installation
+s3mpc version
+
+# If version shows old, force clean install:
+go clean -modcache
+go install github.com/Garvitkul/s3mpc@latest
 ```
 
 ## Quick Start
@@ -317,7 +325,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/s3mpc/s3mpc).
+For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/Garvitkul/s3mpc).
 
 ## Security
 
