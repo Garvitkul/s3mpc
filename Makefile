@@ -1,7 +1,7 @@
 # Makefile for s3mpc
 
 # Version information
-VERSION ?= 1.0.0
+VERSION ?= 1.0.2
 BUILD_TIME := $(shell date -u '+%Y-%m-%d_%H:%M:%S')
 GIT_COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
