@@ -1,4 +1,4 @@
-module github.com/s3mpc/s3mpc
+module github.com/Garvitkul/s3mpc
 
 go 1.21.0
 

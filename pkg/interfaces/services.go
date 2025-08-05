@@ -3,7 +3,7 @@ package interfaces
 import (
 	"context"
 
-	"github.com/s3mpc/s3mpc/pkg/types"
+	"github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 // UploadService handles multipart upload operations

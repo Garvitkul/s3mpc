@@ -6,8 +6,8 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/s3mpc/s3mpc/pkg/interfaces"
-	"github.com/s3mpc/s3mpc/pkg/types"
+	"github.com/Garvitkul/s3mpc/pkg/interfaces"
+	"github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 // SizeService handles size calculation and reporting operations

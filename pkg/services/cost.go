@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/s3mpc/s3mpc/pkg/types"
+	"github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 // CostService implements the CostCalculator interface

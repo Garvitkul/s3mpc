@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/s3mpc/s3mpc/pkg/types"
+	"github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 func TestParseFilter(t *testing.T) {

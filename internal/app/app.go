@@ -9,9 +9,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/s3mpc/s3mpc/internal/config"
-	"github.com/s3mpc/s3mpc/internal/container"
-	"github.com/s3mpc/s3mpc/pkg/types"
+	"github.com/Garvitkul/s3mpc/internal/config"
+	"github.com/Garvitkul/s3mpc/internal/container"
+	"github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 // App represents the main application

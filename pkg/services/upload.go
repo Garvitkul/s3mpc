@@ -13,9 +13,9 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	awsclient "github.com/s3mpc/s3mpc/pkg/aws"
-	"github.com/s3mpc/s3mpc/pkg/interfaces"
-	pkgtypes "github.com/s3mpc/s3mpc/pkg/types"
+	awsclient "github.com/Garvitkul/s3mpc/pkg/aws"
+	"github.com/Garvitkul/s3mpc/pkg/interfaces"
+	pkgtypes "github.com/Garvitkul/s3mpc/pkg/types"
 )
 
 // S3UploadClientInterface defines the S3 operations needed by UploadService

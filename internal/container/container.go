@@ -9,12 +9,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/pricing"
 	"golang.org/x/time/rate"
 
-	"github.com/s3mpc/s3mpc/internal/config"
-	"github.com/s3mpc/s3mpc/internal/logging"
-	"github.com/s3mpc/s3mpc/pkg/aws"
-	"github.com/s3mpc/s3mpc/pkg/filter"
-	"github.com/s3mpc/s3mpc/pkg/interfaces"
-	"github.com/s3mpc/s3mpc/pkg/services"
+	"github.com/Garvitkul/s3mpc/internal/config"
+	"github.com/Garvitkul/s3mpc/internal/logging"
+	"github.com/Garvitkul/s3mpc/pkg/aws"
+	"github.com/Garvitkul/s3mpc/pkg/filter"
+	"github.com/Garvitkul/s3mpc/pkg/interfaces"
+	"github.com/Garvitkul/s3mpc/pkg/services"
 )
 
 // Container holds all service dependencies
