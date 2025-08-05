@@ -17,7 +17,7 @@ This guide provides multiple ways to install s3mpc globally on your system.
 
 ### Method 1: Download Pre-built Binary (Recommended)
 
-1. Go to the [Releases page](https://github.com/s3mpc/s3mpc/releases)
+1. Go to the [Releases page](https://github.com/Garvitkul/s3mpc/releases)
 2. Download the appropriate binary for your platform:
    - `s3mpc-linux-amd64` for Linux
    - `s3mpc-darwin-amd64` for macOS (Intel)
@@ -29,7 +29,7 @@ This guide provides multiple ways to install s3mpc globally on your system.
 **Linux/macOS:**
 ```bash
 # Download and install
-curl -L -o s3mpc https://github.com/s3mpc/s3mpc/releases/latest/download/s3mpc-linux-amd64
+curl -L -o s3mpc https://github.com/Garvitkul/s3mpc/releases/latest/download/s3mpc-linux-amd64
 chmod +x s3mpc
 sudo mv s3mpc /usr/local/bin/
 
@@ -48,7 +48,7 @@ s3mpc version
 If you have Go installed, you can install s3mpc directly:
 
 ```bash
-go install github.com/s3mpc/s3mpc/cmd/s3mpc@latest
+go install github.com/Garvitkul/s3mpc@latest
 ```
 
 This will install the binary to `$GOPATH/bin` (or `$HOME/go/bin` if GOPATH is not set).
@@ -57,7 +57,7 @@ This will install the binary to `$GOPATH/bin` (or `$HOME/go/bin` if GOPATH is no
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/s3mpc/s3mpc.git
+git clone https://github.com/Garvitkul/s3mpc.git
 cd s3mpc
 ```
 
@@ -77,7 +77,7 @@ make install
 #### Homebrew (macOS/Linux)
 ```bash
 # Add the tap (once available)
-brew tap s3mpc/s3mpc
+brew tap Garvitkul/s3mpc
 brew install s3mpc
 ```
 
@@ -167,7 +167,7 @@ s3mpc completion powershell > s3mpc.ps1
 
 - Check the built-in help: `s3mpc --help`
 - View command-specific help: `s3mpc [command] --help`
-- Report issues: [GitHub Issues](https://github.com/s3mpc/s3mpc/issues)
+- Report issues: [GitHub Issues](https://github.com/Garvitkul/s3mpc/issues)
 
 ## Uninstallation
 
