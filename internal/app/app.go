@@ -44,7 +44,7 @@ It helps you discover, analyze, and clean up incomplete uploads across all your 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Handle --version flag
 			if version, _ := cmd.Flags().GetBool("version"); version {
-				cmd.Println("s3mpc version 1.0.0")
+				cmd.Printf("s3mpc version %s\n", getVersion())
 				return nil
 			}
 			// Show help if no subcommand is provided
@@ -66,7 +66,7 @@ It helps you discover, analyze, and clean up incomplete uploads across all your 
 		Use:   "version",
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Println("s3mpc version 1.0.0")
+			cmd.Printf("s3mpc version %s\n", getVersion())
 		},
 	})
 
@@ -773,6 +773,12 @@ func (a *App) runExportCommand(cmd *cobra.Command, args []string) error {
 	}
 	
 	return nil
+}
+
+// getVersion returns the version from main package or fallback
+func getVersion() string {
+	// This will be set by build flags in main package
+	return "1.0.2"
 }
 
 // FormatBytes formats bytes into human-readable format
