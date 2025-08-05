@@ -783,7 +783,7 @@ func (a *App) getVersion() string {
 	if a.version != "" {
 		return a.version
 	}
-	return "1.0.2"
+	return "1.0.3"
 }
 
 // FormatBytes formats bytes into human-readable format
