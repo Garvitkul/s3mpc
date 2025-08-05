@@ -4,6 +4,7 @@ A powerful command-line tool for managing incomplete S3 multipart uploads across
 
 ## Features
 
+- **Auto-Region Detection**: Automatically detects bucket regions and uses correct regional endpoints
 - **Storage Analysis**: Calculate total storage usage of incomplete multipart uploads
 - **Cost Estimation**: Estimate monthly storage costs with regional pricing
 - **Age Distribution**: Analyze upload age patterns to identify abandoned uploads
@@ -50,13 +51,13 @@ go install github.com/s3mpc/s3mpc/cmd/s3mpc@latest
 ### Basic Usage
 
 ```bash
-# Show total storage usage
+# Show total storage usage (automatically scans all regions)
 s3mpc size
 
 # Calculate estimated costs
 s3mpc cost
 
-# List all incomplete uploads
+# List all incomplete uploads (works across all regions automatically)
 s3mpc list
 
 # Show age distribution
@@ -70,6 +71,9 @@ s3mpc delete --older-than 30d --dry-run
 
 # Export data to CSV
 s3mpc export --format csv
+
+# Focus on specific region (optional)
+s3mpc list --region us-east-1
 ```
 
 ## Commands
