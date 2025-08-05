@@ -48,12 +48,7 @@ func (s *BucketService) ListBuckets(ctx context.Context, region string) ([]pkgty
 
 	var buckets []pkgtypes.Bucket
 	
-	// If region is specified, filter buckets by region
-	if region != "" {
-		return s.filterBucketsByRegion(ctx, output.Buckets, region)
-	}
-
-	// Convert AWS bucket types to our bucket types
+	// Convert AWS bucket types to our bucket types and get their regions
 	for _, bucket := range output.Buckets {
 		if bucket.Name == nil {
 			continue
@@ -61,8 +56,12 @@ func (s *BucketService) ListBuckets(ctx context.Context, region string) ([]pkgty
 
 		bucketRegion, err := s.GetBucketRegion(ctx, *bucket.Name)
 		if err != nil {
-			// Log error but continue with other buckets
-			// In a real implementation, you might want to use a proper logger
+			// Skip buckets we can't access
+			continue
+		}
+
+		// If region filter is specified, only include matching buckets
+		if region != "" && bucketRegion != region {
 			continue
 		}
 

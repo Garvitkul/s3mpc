@@ -127,6 +127,8 @@ type UploadService struct {
 	progressReporter ProgressReporter
 	confirmationReader io.Reader
 	outputWriter io.Writer
+	regionalClients map[string]S3UploadClientInterface
+	clientMutex     sync.RWMutex
 }
 
 // NewUploadService creates a new UploadService instance
@@ -139,6 +141,7 @@ func NewUploadService(client *awsclient.S3Client, bucketService interfaces.Bucke
 		progressReporter:   NewConsoleProgressReporter(os.Stdout, false),
 		confirmationReader: os.Stdin,
 		outputWriter:       os.Stdout,
+		regionalClients:    make(map[string]S3UploadClientInterface),
 	}
 }
 
@@ -199,10 +202,21 @@ func (s *UploadService) ListUploads(ctx context.Context, opts pkgtypes.ListOptio
 		return s.listUploadsForBucket(ctx, bucket, opts)
 	}
 
-	// Get all buckets
-	buckets, err := s.bucketService.ListBuckets(ctx, opts.Region)
+	// Get all buckets (don't filter by region yet)
+	buckets, err := s.bucketService.ListBuckets(ctx, "")
 	if err != nil {
 		return nil, fmt.Errorf("failed to list buckets: %w", err)
+	}
+	
+	// Filter by region if specified
+	if opts.Region != "" {
+		var filteredBuckets []pkgtypes.Bucket
+		for _, bucket := range buckets {
+			if bucket.Region == opts.Region {
+				filteredBuckets = append(filteredBuckets, bucket)
+			}
+		}
+		buckets = filteredBuckets
 	}
 
 	// Process buckets concurrently
@@ -261,6 +275,16 @@ func (s *UploadService) listUploadsForBuckets(ctx context.Context, buckets []pkg
 
 	// Return partial results even if some buckets failed
 	if len(errors) > 0 {
+		// Log first few errors for debugging
+		for i, err := range errors {
+			if i >= 3 { // Limit to first 3 errors
+				break
+			}
+			fmt.Fprintf(os.Stderr, "Bucket access error %d: %v\n", i+1, err)
+		}
+		if len(errors) > 3 {
+			fmt.Fprintf(os.Stderr, "... and %d more errors\n", len(errors)-3)
+		}
 		return allUploads, fmt.Errorf("failed to list uploads for some buckets: %d errors occurred", len(errors))
 	}
 
@@ -295,7 +319,13 @@ func (s *UploadService) listUploadsForBucket(ctx context.Context, bucket pkgtype
 			input.MaxUploads = aws.Int32(int32(remaining))
 		}
 
-		output, err := s.client.ListMultipartUploads(ctx, input)
+		// Use region-specific client for this bucket
+		regionalClient, err := s.getRegionalClient(ctx, bucket.Region)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create regional client for bucket %s: %w", bucket.Name, err)
+		}
+		
+		output, err := regionalClient.ListMultipartUploads(ctx, input)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list multipart uploads for bucket %s: %w", bucket.Name, err)
 		}
@@ -729,4 +759,46 @@ func (s *UploadService) deleteUploadsWithProgress(ctx context.Context, uploads [
 // deleteUploadsParallel deletes uploads in parallel (legacy method for backward compatibility)
 func (s *UploadService) deleteUploadsParallel(ctx context.Context, uploads []pkgtypes.MultipartUpload) error {
 	return s.deleteUploadsWithProgress(ctx, uploads)
+}
+
+// getRegionalClient returns a region-specific S3 client, creating it if needed
+func (s *UploadService) getRegionalClient(ctx context.Context, region string) (S3UploadClientInterface, error) {
+	// Initialize map if nil
+	if s.regionalClients == nil {
+		s.clientMutex.Lock()
+		if s.regionalClients == nil {
+			s.regionalClients = make(map[string]S3UploadClientInterface)
+		}
+		s.clientMutex.Unlock()
+	}
+	
+	s.clientMutex.RLock()
+	if client, exists := s.regionalClients[region]; exists {
+		s.clientMutex.RUnlock()
+		return client, nil
+	}
+	s.clientMutex.RUnlock()
+
+	// Create new regional client
+	s.clientMutex.Lock()
+	defer s.clientMutex.Unlock()
+
+	// Double-check after acquiring write lock
+	if client, exists := s.regionalClients[region]; exists {
+		return client, nil
+	}
+
+	// Create AWS client wrapper for this region
+	clientConfig := awsclient.ClientConfig{
+		Region:    region,
+		RateLimit: 10.0,
+	}
+	
+	client, err := awsclient.NewS3Client(ctx, clientConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create S3 client for region %s: %w", region, err)
+	}
+
+	s.regionalClients[region] = client
+	return client, nil
 }
