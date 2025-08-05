@@ -323,10 +323,6 @@ make install
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
-
-For issues, questions, or contributions, please visit the [GitHub repository](https://github.com/Garvitkul/s3mpc).
-
 ## Security
 
 s3mpc follows AWS security best practices:
