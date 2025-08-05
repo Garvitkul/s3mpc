@@ -18,11 +18,14 @@ import (
 type App struct {
 	container *container.Container
 	rootCmd   *cobra.Command
+	version   string
 }
 
 // NewApp creates a new application instance
-func NewApp() *App {
-	app := &App{}
+func NewApp(version string) *App {
+	app := &App{
+		version: version,
+	}
 	app.setupCommands()
 	return app
 }
@@ -44,7 +47,7 @@ It helps you discover, analyze, and clean up incomplete uploads across all your 
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Handle --version flag
 			if version, _ := cmd.Flags().GetBool("version"); version {
-				cmd.Printf("s3mpc version %s\n", getVersion())
+				cmd.Printf("s3mpc version %s\n", a.getVersion())
 				return nil
 			}
 			// Show help if no subcommand is provided
@@ -66,7 +69,7 @@ It helps you discover, analyze, and clean up incomplete uploads across all your 
 		Use:   "version",
 		Short: "Show version information",
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Printf("s3mpc version %s\n", getVersion())
+			cmd.Printf("s3mpc version %s\n", a.getVersion())
 		},
 	})
 
@@ -776,8 +779,10 @@ func (a *App) runExportCommand(cmd *cobra.Command, args []string) error {
 }
 
 // getVersion returns the version from main package or fallback
-func getVersion() string {
-	// This will be set by build flags in main package
+func (a *App) getVersion() string {
+	if a.version != "" {
+		return a.version
+	}
 	return "1.0.2"
 }
 

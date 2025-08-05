@@ -19,7 +19,7 @@ var (
 func main() {
 	ctx := context.Background()
 	
-	app := app.NewApp()
+	app := app.NewApp(Version)
 	if err := app.Run(ctx, os.Args[1:]); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)

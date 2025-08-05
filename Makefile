@@ -22,7 +22,7 @@ BINARY_NAME := s3mpc
 BINARY_PATH := ./$(BINARY_NAME)
 
 # Main package
-MAIN_PACKAGE := ./cmd/s3mpc
+MAIN_PACKAGE := .
 
 .PHONY: all build clean test deps help install
 
